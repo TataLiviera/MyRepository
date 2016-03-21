@@ -1,0 +1,63 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Threading;
+using System.IO;
+
+namespace Trainy
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            int countZero = 0;
+            int max = 0;
+            char[] maxZero = new char[1];
+            
+            char[] cc = new char[100];
+            byte[] bArray;
+            string stroka;
+            FileStream inputFile, outputFile;
+            
+            inputFile = new FileStream(@"D:\Desktop\Learn_C#\Console\Trainy\Input.txt", FileMode.Open, FileAccess.Read);
+
+            bArray = new byte[inputFile.Length];
+            inputFile.Read(bArray, 0, bArray.Length);
+
+            for(int i =0; i < 100; i++)
+            {
+                cc = Encoding.Default.GetChars(bArray);
+            }
+            inputFile.Close();
+
+            for (int i = 0; i < cc.Length; i++)
+            {
+                if (cc[i] == '0')
+                {
+                    countZero++;
+                }
+                else if (countZero > max)
+                    max = countZero;
+                else countZero = 0;
+            }
+
+            stroka = Encoding.Default.GetString(bArray);
+            Console.WriteLine("Строка из файла: \n" + stroka);
+
+            Console.WriteLine("Count = " + max);
+
+            outputFile = new FileStream(@"D:\Desktop\Learn_C#\Console\Trainy\Output.txt", FileMode.OpenOrCreate, FileAccess.Write);
+
+            StreamWriter sw = new StreamWriter(outputFile);
+            sw.Write(max.ToString());
+            sw.Close();
+            
+            Console.WriteLine("Запись результата в файл Output.txt завершена");
+
+            Console.ReadKey();
+        }
+    }
+}
+
